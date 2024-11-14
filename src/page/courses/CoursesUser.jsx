@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Loading from "../../components/Loading";
 import Footer from "../../components/Footer";
 import Courses from "../../components/Courses";
+import Error from "../../components/Error";
 
 const CoursesUser = () => {
   const { id } = useParams();
@@ -31,7 +32,7 @@ const CoursesUser = () => {
   }
 
   if (error) {
-    return <div className="text-white mt-5 text-center">Dữ Liệu Bị Lỗi</div>;
+    return <Error/>;
   }
 
   return (

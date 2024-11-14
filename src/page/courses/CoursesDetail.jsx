@@ -3,23 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getACourse } from "../../redux/apiRequest";
 import Courses from "../../components/Courses";
-import Footer from "../../components/Footer";
 import Loading from "../../components/Loading";
+import Error from "../../components/Error";
 
 const CourseDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const videoRef = useRef(null);
   const [isBlocked, setIsBlocked] = useState(false);
-  const [isShowMore, setIsShowMore] = useState(false);
-
-  // Retrieve course information from Redux store
   const allCourses = useSelector((state) => state.course.courses.allcourses);
   const courseDetail = Array.isArray(allCourses) ? allCourses.find(course => course._id === id) : null;
   const isFetching = useSelector((state) => state.course.courses.isFetching);
   const error = useSelector((state) => state.course.courses.error);
 
-  // Redirect to order page
   const handlePostOrder = () => {
     window.location.href = `/order/${id}`;
   };
@@ -31,7 +27,7 @@ const CourseDetail = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setIsBlocked(true);
-    }, 30000);
+    }, 20000);
 
     return () => clearTimeout(timeoutId);
   }, []);
@@ -41,8 +37,12 @@ const CourseDetail = () => {
   }
 
   if (error) {
-    return <div className="text-white mt-5 text-center">Dữ Liệu Bị Lỗi</div>;
+    return <Error />;
   }
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+  };
 
   const renderStars = (rating) => {
     const stars = Math.round(rating);
@@ -71,7 +71,7 @@ const CourseDetail = () => {
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-gray-800 mb-4">{courseDetail.title}</h2>
               <p className="text-gray-600 mb-4"><strong>Description :</strong> {courseDetail.description}</p>
-              <p className="text-gray-600 mb-4"><strong>Price :</strong> {courseDetail.price}</p>
+              <p className="text-gray-600 mb-4"><strong>Price :</strong> {formatPrice(courseDetail.price)}</p>
               <p className="text-gray-600 mb-4"><strong>Instructor :</strong> {courseDetail.instructor}</p>
               <p className="text-gray-600 mb-4"><strong>Duration :</strong> {courseDetail.duration}</p>
               <div className="mb-4">{renderStars(courseDetail.rating)}</div>
@@ -88,14 +88,8 @@ const CourseDetail = () => {
         <div className="mt-8 pb-8">
           <h3 className="text-xl font-bold mb-4 ml-8">Khóa học khác</h3>
           <Courses />
-          <div className="flex justify-center items-center underline cursor-pointer">
-            <p onClick={() => setIsShowMore(!isShowMore)}>
-              {isShowMore ? "Đóng Lại" : "Xem Thêm"}
-            </p>
-          </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

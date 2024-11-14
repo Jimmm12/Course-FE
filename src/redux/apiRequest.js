@@ -115,7 +115,6 @@ export const getACourse = async(dispatch,courseId) => {
   dispatch(getACourseStart());
   try {
     const res = await axios.get(`${import.meta.env.VITE_BACK_URL}/course/${courseId}`, 
-      
     );
     dispatch(getACourseSuccess(res.data));
   } catch (err) {
@@ -142,18 +141,20 @@ export const getACourseUser = async(dispatch,courseId, accessToken) => {
 
 
 // ORDER
-export const posOrderCourse = async (dispatch,orderData,accessToken) => {
+export const posOrderCourse = async (dispatch, orderData, accessToken) => {
   dispatch(postOrderStart());
   try {
     const res = await axios.post(
-      `${import.meta.env.VITE_BACK_URL}/order/payment`,  orderData,
+      `${import.meta.env.VITE_BACK_URL}/order/payment`, orderData,
       {
         headers: { token: `Bearer ${accessToken}` },
       }
     );
     dispatch(postOrderSuccess(res.data));
+    return res; 
   } catch (err) {
     console.error("Failed to process payment:", err);
     dispatch(postOrderFailed());
+    return { status: "error", message: "Thanh Toán Không Thành Công" }; 
   }
 };

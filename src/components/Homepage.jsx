@@ -1,5 +1,4 @@
 import Courses from "./Courses";
-import Footer from "./Footer";
 
 const Homepage = () => {
   return (
@@ -21,7 +20,7 @@ const Homepage = () => {
       <div className="mt-6">
         <Courses />
       </div>
-      <Footer />
+      
 
     </>
   );

@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Loading from "./Loading";
+import { useNavigate } from "react-router-dom"; // Import useNavigate here
 import { useParams } from "react-router-dom";
 import { getACourse, posOrderCourse } from "../redux/apiRequest";
+import Loading from "./Loading";
+import toast from "react-hot-toast";
+import Error from "./Error";
 
 const OrderForm = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Initialize navigate here
   const user = useSelector((state) => state.auth.login.currentUser);
   const isFetching = useSelector((state) => state.order.order.isFetching);
   const error = useSelector((state) => state.order.order.error);
@@ -15,71 +19,92 @@ const OrderForm = () => {
 
   useEffect(() => {
     if (id) {
-      getACourse(dispatch, id); // Fetch course details by id
+      getACourse(dispatch, id);
     }
   }, [dispatch, id]);
 
- 
   const handlePayment = async (e) => {
     e.preventDefault();
   
     if (accessToken && id && courseDetail) {
       const orderData = {
-        user_id: user.id, 
+        user_id: user.id,
         courses: [
           {
-            course_id: id, 
-            price: courseDetail.price, 
+            course_id: id,
+            price: courseDetail.price,
           },
         ],
-        total_price: courseDetail.price, 
-        payment_method: "credit_card", 
+        total_price: courseDetail.price,
+        payment_method: "credit_card",
       };
   
-      await posOrderCourse(dispatch, orderData, accessToken); 
+      const res = await posOrderCourse(dispatch, orderData, accessToken);
+      if (res.status === "error") {
+        toast.error(res.message);
+      }else {
+        toast.success(res.message || "Thanh Toán Thành Công");
+        navigate("/"); 
+      }
     }
   };
+
+  
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+  };
+
+
+  const renderStars = (rating) => {
+    const stars = Math.round(rating);
+    return Array.from({ length: 5 }, (_, index) => (
+      <span key={index} className={index < stars ? "text-yellow-500 text-2xl" : "text-gray-300"}>
+        ★
+      </span>
+    ));
+  };
+
   if (isFetching) {
     return <Loading />;
   }
 
   if (error) {
-    return <div className="text-white mt-5 text-center">Dữ Liệu Bị Lỗi</div>;
+    return <Error />;
   }
 
   if (!courseDetail) {
     return <div className="text-white mt-5 text-center">Khóa học không tồn tại</div>;
   }
 
+ 
   return (
-    <div className="min-h-screen bg-gray-100 m-8 flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-8">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Thanh Toán</h2>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 m-5">
+      <h1 className="flex justify-center items-center text-2xl mb-5">Thanh Toán</h1>
 
-        <form className="space-y-4" onSubmit={handlePayment}>
+      {/* Flexbox container for the course information */}
+      <div className="flex justify-between items-center bg-white p-6 rounded-lg shadow-lg">
+        {/* Left Side (Course Details) */}
+        <div className="flex items-center space-x-6 w-1/2">
+          <img src={courseDetail.imageUrl} alt={courseDetail.title} className="w-52 h-auto rounded-md" />
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Tên Người Dùng</label>
-            <p>{user?.username}</p>
+            <h2 className="font-semibold text-lg text-gray-800">{courseDetail.title}</h2>
+            <p className="text-gray-600">{courseDetail.instructor}</p>
+            <p className="text-gray-500">{courseDetail.duration}</p>
+            <div className="flex mt-2">{renderStars(courseDetail.rating)}</div>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">Tên Khóa Học</label>
-            <p>{courseDetail?.title}</p>
+        <div className="w-1/2 flex justify-end items-center">
+          <div className="text-right">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">{formatPrice(courseDetail.price)}</h2>
           </div>
-
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">Tổng Tiền</label>
-            <input
-              type="text"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100"
-              value={`$${courseDetail?.price || 0}`} // Display course price
-              disabled
-            />
-          </div>
-
+        </div>
+      </div>
+      <div className="mt-8">
+        <form onSubmit={handlePayment}>
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md transition-colors mt-6"
           >
             Thanh Toán
           </button>

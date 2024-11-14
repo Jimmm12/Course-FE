@@ -3,16 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllCourses } from "../redux/apiRequest";
 import CourseList from "../page/courses/CoursesList";
 import Loading from "./Loading";
+import Error from "./Error";
 
 const Courses = () => {
   const dispatch = useDispatch();
   const [isFetched, setIsFetched] = useState(false); // Kiểm soát việc gọi API
-  const courses = useSelector((state) => state.course.courses.allcourses);
-  console.log(courses)
-
+  const courses = useSelector((state) => state.course.courses.allcourses) ;
   const isFetching = useSelector((state) => state.course.courses.isFetching);
   const error = useSelector((state) => state.course.courses.error);
-  const [isShowMore, setIsshowMore] = useState(false);
+
+
+
+
 
   useEffect(() => {
     // Kiểm tra xem dữ liệu đã được tải hay chưa
@@ -23,11 +25,11 @@ const Courses = () => {
   }, [dispatch, isFetched, isFetching, courses.length]); // Thêm dependency courses.length
 
   if (isFetching) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   if (error) {
-    return <p className="text-center text-white font-bold mb-4">Có lỗi xảy ra khi tải dữ liệu.</p>;
+    return <Error />;
   }
 
   return (
@@ -48,11 +50,6 @@ const Courses = () => {
         ) : (
           <p className="text-center text-gray-700">Không có khóa học nào.</p>
         )}
-      </div>
-      <div className="flex justify-center text-white mb-4 items-center underline cursor-pointer">
-        <p
-          onClick={() => setIsshowMore(!isShowMore)}
-        > {isShowMore ? "xem Thêm" : "Đóng Lại "} </p>
       </div>
     </div>
   );

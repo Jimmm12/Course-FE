@@ -21,7 +21,7 @@ const CoursesList = ({ _id, title, description, imageUrl }) => {
   };
 
   return (
-   <>
+    <>
       <div>
         <div
           key={_id}
@@ -35,7 +35,7 @@ const CoursesList = ({ _id, title, description, imageUrl }) => {
             />
           </Link>
           <div className="p-4">
-            <h5 className="mb-2 text-xl font-semibold text-gray-800">
+            <h5 className="mb-2 text-xl font-semibold text-gray-800 truncate">
               {title}
             </h5>
             <p className="text-gray-600 text-sm line-clamp-2 mb-4">
@@ -66,8 +66,12 @@ const CoursesList = ({ _id, title, description, imageUrl }) => {
           </div>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={closeModal} title="Hay đăng nhập để xem chi tiết khóa học" />
-   </>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title="Hay đăng nhập để xem chi tiết khóa học"
+      />
+    </>
   );
 };
 

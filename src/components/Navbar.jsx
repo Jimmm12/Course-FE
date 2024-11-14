@@ -23,13 +23,13 @@ const Navbar = () => {
           <>
             <Link
               to={"/register"}
-              className="text-white mr-2 hover:text-rose-300 px-3 bg-slate-500 rounded hover:bg-black"
+              className="text-white px-2 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 transition duration-300 mr-2"
             >
               Đăng Ký
             </Link>
             <Link
               to={"/login"}
-              className="text-white mr-2 hover:text-rose-300 px-3 bg-slate-500 rounded hover:bg-black"
+              className="text-white px-2 py-1 rounded-lg bg-green-600 hover:bg-green-700 transition duration-300"
             >
               Đăng Nhập
             </Link>

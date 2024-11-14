@@ -15,10 +15,10 @@ const orderSlice = createSlice({
     },
     postOrderSuccess: (state, actions) => {
       state.order.isFetching = false,
-      state.order.ordercourse = actions.payload.order;
+      state.order.ordercourse = actions.payload;
     },
     postOrderFailed: (state) => {
-      state.order.isFetching =  false;
+      state.order.isFetching = false;
       state.order.error = true;
     },
   }
