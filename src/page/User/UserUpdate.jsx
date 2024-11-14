@@ -11,7 +11,7 @@ const UserUpdate = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.login.currentUser);
   const userDetail = useSelector((state) => state.user.users.userdetail);
-  const [editData, setEditData] = useState({ username: "", email: "", password: "" });
+  const [editData, setEditData] = useState({ username: "", email: ""});
   const accessToken = user?.accessToken;
 
   useEffect(() => { 
@@ -25,7 +25,6 @@ const UserUpdate = () => {
       setEditData({
         username: userDetail.username || "",
         email: userDetail.email || "",
-        password: "",  // Clear password initially for security
       });
     }
   }, [userDetail]);
@@ -85,15 +84,6 @@ const UserUpdate = () => {
         <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="password">
           Mật Khẩu
         </label>
-        <input
-          id="password"
-          name="password"
-          value={editData.password || ""}
-          onChange={handleInputChange}
-          placeholder="Mật Khẩu"
-          type="password"  // Ensure the password is hidden
-          className="w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
       </div>
       <button
         onClick={handleSave}
