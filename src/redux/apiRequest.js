@@ -142,18 +142,18 @@ export const getACourseUser = async(dispatch,courseId, accessToken) => {
 
 
 // ORDER
-
-export const posOrderCourse = async(dispatch,courseId, accessToken) => {
+export const posOrderCourse = async (dispatch,orderData,accessToken) => {
   dispatch(postOrderStart());
   try {
-    const res = await axios.post(`${import.meta.env.VITE_BACK_URL}/order/${courseId}`,
+    const res = await axios.post(
+      `${import.meta.env.VITE_BACK_URL}/order/payment`,  orderData,
       {
         headers: { token: `Bearer ${accessToken}` },
       }
     );
     dispatch(postOrderSuccess(res.data));
   } catch (err) {
-    console.error("Failed to fetch courses:", err); 
-    dispatch(postOrderFailed()); 
+    console.error("Failed to process payment:", err);
+    dispatch(postOrderFailed());
   }
-}
+};

@@ -9,6 +9,7 @@ import UserInfo from "./page/User/UserInfo";
 import UserUpdate from "./page/User/UserUpdate";
 import CoursesUser from "./page/courses/CoursesUser";
 import Order from "./components/Order";
+import Coursepayment from "./page/Payment/coursepayment";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/user/:id" exact element={<UserInfo />} />
         <Route path="/user/update/:id" exact element={<UserUpdate />} />
         <Route path="/order/:id" exact element={<Order />} />
+        <Route path="/order/payment" exact element={<Coursepayment/>}  />
       </Routes>
     </Router>
   );

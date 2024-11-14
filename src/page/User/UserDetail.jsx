@@ -64,7 +64,7 @@ const UserDetail = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="3" className="px-6 py-4 text-center text-sm text-white">
+                    <td colSpan="3" className="px-6 py-4 text-center text-sm text-black">
                       Không có khóa học
                     </td>
                   </tr>

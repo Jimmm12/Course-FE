@@ -14,7 +14,7 @@ const UserUpdate = () => {
   const [editData, setEditData] = useState({ username: "", email: "", password: "" });
   const accessToken = user?.accessToken;
 
-  useEffect(() => {
+  useEffect(() => { 
     if (!userDetail) {
       GetUserDetail(dispatch, id, accessToken);
     }

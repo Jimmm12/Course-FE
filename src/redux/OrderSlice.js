@@ -4,22 +4,22 @@ const orderSlice = createSlice({
   name: "order",
   initialState: {
     order:{
-      ordercourse: [],
+      ordercourse: null,
       isFetching: false,
       error : false
     }
   },
   reducers: {
     postOrderStart: (state) => {
-      state.users.isFetching = true;
+      state.order.isFetching = true;
     },
     postOrderSuccess: (state, actions) => {
-      state.users.isFetching = false,
-      state.users.userdetail = actions.payload;
+      state.order.isFetching = false,
+      state.order.ordercourse = actions.payload.order;
     },
     postOrderFailed: (state) => {
-      state.users.isFetching =  false;
-      state.users.error = true;
+      state.order.isFetching =  false;
+      state.order.error = true;
     },
   }
 });

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getACourse } from "../../redux/apiRequest";
 import Courses from "../../components/Courses";
-import Footer from "../../components/Footer"
+import Footer from "../../components/Footer";
 import Loading from "../../components/Loading";
 
 const CourseDetail = () => {
@@ -11,18 +11,18 @@ const CourseDetail = () => {
   const dispatch = useDispatch();
   const videoRef = useRef(null);
   const [isBlocked, setIsBlocked] = useState(false);
-  const [isShowMore, setIsshowMore] = useState(false);
+  const [isShowMore, setIsShowMore] = useState(false);
 
-  // Lấy thông tin khóa học từ Redux store
+  // Retrieve course information from Redux store
   const allCourses = useSelector((state) => state.course.courses.allcourses);
   const courseDetail = Array.isArray(allCourses) ? allCourses.find(course => course._id === id) : null;
   const isFetching = useSelector((state) => state.course.courses.isFetching);
   const error = useSelector((state) => state.course.courses.error);
 
-  const handlePostOrder = (courseId) => {
-    window.location.href = `/order/${courseId}`;
+  // Redirect to order page
+  const handlePostOrder = () => {
+    window.location.href = `/order/${id}`;
   };
-;
 
   useEffect(() => {
     getACourse(dispatch, id);
@@ -30,7 +30,7 @@ const CourseDetail = () => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setIsBlocked(true); 
+      setIsBlocked(true);
     }, 30000);
 
     return () => clearTimeout(timeoutId);
@@ -76,7 +76,9 @@ const CourseDetail = () => {
               <p className="text-gray-600 mb-4"><strong>Duration :</strong> {courseDetail.duration}</p>
               <div className="mb-4">{renderStars(courseDetail.rating)}</div>
               <p className="text-gray-600 mb-4"><strong>Students Enrolled :</strong> {courseDetail.students_enrolled} học viên đã tham gia</p>
-              <button className="border rounded btn-primary w-48" onClick={handlePostOrder}>Mua Khóa học </button>
+              <button className="border rounded btn-primary w-48" onClick={() => handlePostOrder(id)}>
+                Mua Khóa học
+              </button>
             </div>
           </div>
         ) : (
@@ -87,9 +89,9 @@ const CourseDetail = () => {
           <h3 className="text-xl font-bold mb-4 ml-8">Khóa học khác</h3>
           <Courses />
           <div className="flex justify-center items-center underline cursor-pointer">
-            <p
-              onClick={() => setIsshowMore(!isShowMore)}
-            > {isShowMore ? "xem Thêm" : "Đóng Lại "} </p>
+            <p onClick={() => setIsShowMore(!isShowMore)}>
+              {isShowMore ? "Đóng Lại" : "Xem Thêm"}
+            </p>
           </div>
         </div>
       </div>
