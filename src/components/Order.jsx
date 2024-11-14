@@ -43,7 +43,7 @@ const OrderForm = () => {
       if (res.status === "error") {
         toast.error(res.message);
       }else {
-        toast.success(res.message || "Thanh Toán Thành Công");
+        toast.success(res.message || "Thanh Toán Thành Công! Vui Lòng Kiểm Tra Email");
         navigate("/"); 
       }
     }
@@ -81,9 +81,7 @@ const OrderForm = () => {
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 m-5">
       <h1 className="flex justify-center items-center text-2xl mb-5">Thanh Toán</h1>
 
-      {/* Flexbox container for the course information */}
       <div className="flex justify-between items-center bg-white p-6 rounded-lg shadow-lg">
-        {/* Left Side (Course Details) */}
         <div className="flex items-center space-x-6 w-1/2">
           <img src={courseDetail.imageUrl} alt={courseDetail.title} className="w-52 h-auto rounded-md" />
           <div>
